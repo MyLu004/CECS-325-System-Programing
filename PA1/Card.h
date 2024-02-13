@@ -1,3 +1,5 @@
+//HEADER FOR CARD.CPP
+
 #ifndef Card_h
 #define Card_h
 
@@ -8,12 +10,12 @@ using namespace std;
 
 class Card{
     private:
-        char mySuit;
+        char mySuit; 
         char myRank;
     public:
-        Card(char mySuit, char myRank);
-        void display();    
-        int compare(Card other);
+        Card(char mySuit, char myRank); //storing the object: SuitRank into the Card vector
+        void display();    //display Card function
+        int compare(Card other); //comparison car function
 };
 
 
