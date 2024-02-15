@@ -1,4 +1,10 @@
 //SOURCE CODE DECK.CPP
+// Author: My Lu
+// CECS 325-02 Prog 1
+// Due 02/16/2024
+
+//I certify that this program is my own original work. I did not copy any part of this program from any other source. 
+//I further certify that I typed each and every line of code in this program
 
 #include <iostream>
 #include <algorithm>
@@ -24,6 +30,7 @@ Deck::Deck(){
     //the comparison operator follow the ASCII character order
     char ranks[] = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
 
+    //for value in myList
     for (char suit : suits){
         for (char rank : ranks){
             //push the card in term rank:suit in the vector Card
@@ -52,6 +59,7 @@ void Deck::display(){
     //counting line so it can divide into 4 different lines
 
     // cout<< "display went here:"<<endl;
+    // for python: for i in myList
     for (Card card : cards){
         //get each card from Card dislay
         card.display();

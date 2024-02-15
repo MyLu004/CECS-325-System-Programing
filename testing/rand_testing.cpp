@@ -20,8 +20,9 @@ int main(){
     }
 
     //print the shuffle array
+    //O(n) times
     for (int i = 0; i < 10; ++i){
-        cout << myArray[i]<<endl;
+        cout << myArray[i]<<endl;  
     }
 
     return 0;
