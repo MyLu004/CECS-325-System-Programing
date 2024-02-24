@@ -40,6 +40,8 @@ int Card::compare(Card other){
 
     //if player 1 card.rank larger than player 2
     if(myRank > other.myRank){
+        cout << myRank << endl;
+        cout << other.myRank << endl;
         return 1;
     }
 
