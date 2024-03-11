@@ -1,4 +1,4 @@
-// Author: My Lu
+ // Author: My Lu
 // CECS 325-02 Prog 1
 // Due 02/16/2024
 
