@@ -5,87 +5,45 @@
 //I certify that this program is my own original work. I did not copy any part of this program from any other source. 
 //I further certify that I typed each and every line of code in this program
 
-
-/*main function mysort need to do:
-1. Read the contents of the input file (numbers.dat).
-2. Populate an array with the numbers read from the file.
-3. Call mysort function to sort the array.
-4. Write the sorted array back to an output file (mysort.out).
-5. Verify that the output file is sorted.
-*/
 #include <iostream>
-// #include <vector>
-#include <cmath>
 #include <fstream>
-#include <string>
-#include <ctime>
 #include <cstdlib>
- 
+#include <ctime>
+
 using namespace std;
-
-void swapFunction(int &x, int &y){
-    int temp;
-    temp = x;
-    x = y;
-    y = temp;
-};
-
-void bubble(int *myArr, int arrSize){
-    for(int i = 0; i < arrSize; i++){
-        int swaps = 0;
-
-        for (int j = 0; j < arrSize-1; j++){
-            if(myArr[j] > myArr[j+1]){
-                //swap the item if the next item is biggier
-                swapFunction(myArr[j],myArr[j+1]);
-                swaps = 1;
-            };
-        };
-        // cout <<"my swap: "<<swaps<<endl;
-        if(!swaps) //if there nothing to swap, break
-        break;
-    };
-
-};
 
 int main(int argument, char* argv[]){
 
-    //Purpose: sort numbers from numbers.dat, output to stdout (standard out)
-    //Description: Uses bubble sort function on an array of integers
-    //It will accept up to 1 million numbers from the input file, but will run successfully with less
-    //It accepts 2 command line arguments which is the input file and the output file name
-
-    //open inoout file
-    ifstream myFile(argv[1]);
-    if(!myFile){
-        cerr <<"error, cannot open file"<<endl;
+    if (argument != 4){
+        cout << "need 4 argument to pass the command"<<endl;
     };
 
-    //read number fron input file into array
-    const int mySize = 1000000;
-    int myArray[mySize];
-    int count = 0; //size of the array
-    int num;
-    while (myFile >> num && count < mySize){
-        myArray[count++] = num;
+    //parse command line arguments
+
+    int count = stoi(argv[1]);
+    int min = stoi(argv[2]);
+    int max = stoi(argv[3]);
+
+    //ofstream outfile ("filename"): creates an object named "filename" of type ofstram
+    //ofstream: a class in C++ : represents an output stream to a file
+    //myFile : name of the objects that creating of type 'ofstream'
+    //filename [aka: numbers.dat] : specifies that we want to open (or create if it doesn't exist), a file name numbers.dat in the 
+    //current directory for writing
+    ofstream myFile;
+    myFile.open("numbers.dat");
+    //seed the random number generator
+    srand(time(0));
+    //generate and write random numbers to the file
+    for(int i = 0; i < count; i++){
+        int myRandom = rand() % (max-min+1)+min;
+
+        //myFile : an output file stream object ot which you want to write data
+        //write myRandom [data] into myFile
+        myFile << myRandom << endl;
     }
+
+    //close myFile
     myFile.close();
 
-    //sorting the array using bubble
-
-    bubble(myArray,count);
-
-    ofstream myFile2(argv[2]);
-    if(!myFile2){
-        cerr <<"Error: unable ot open output file"<<endl;
-    };
-
-    //write sorted numbers to output file
-    for (int i = 0; i < count ; i++){
-        myFile2 << myArray[i]<<endl;
-    }
-
-    myFile2.close();
-
     return 0;
-};
+}
