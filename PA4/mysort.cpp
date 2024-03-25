@@ -15,13 +15,20 @@
 */
 #include <iostream>
 // #include <vector>
-#include <cmath>
+// #include <cmath>
 #include <fstream>
-#include <string>
-#include <ctime>
-#include <cstdlib>
+// #include <string>
+// #include <ctime>
+// #include <cstdlib>
+
+#include <chrono>
+#include <pthread.h>
  
 using namespace std;
+
+
+//public variable
+const int mySize = 1000000;
 
 void swapFunction(int &x, int &y){
     int temp;
@@ -44,9 +51,33 @@ void bubble(int *myArr, int arrSize){
         // cout <<"my swap: "<<swaps<<endl;
         if(!swaps) //if there nothing to swap, break
         break;
-    };
-
+    }; 
 };
+
+//structure sortStuff is defined to hold information about a section of the array to be sorted
+struct sortStuff{
+    int *start; // pointer - start of the array
+    int size; // size - section of the array
+};
+
+// bridge function for pthread_create
+// serves as an intermediate between the pthread and the sorting function (bubble)
+
+/*
+void* : cast to a pointer to 'sortStuff'
+
+*/
+void *bridge(void *ptr) {
+    sortStuff *arg = (sortStuff *)ptr;
+
+    // -> pointer structure of sortStuff to (*arg).size or (*arg).start
+    // bubble is called with start pointer and size passed from the sortStuff
+    bubble(arg->start, arg->size);
+    return NULL;
+}
+
+
+
 
 int main(int argument, char* argv[]){
 
@@ -55,14 +86,14 @@ int main(int argument, char* argv[]){
     //It will accept up to 1 million numbers from the input file, but will run successfully with less
     //It accepts 2 command line arguments which is the input file and the output file name
 
-    //open inoout file
+    //open inoout file  
     ifstream myFile(argv[1]);
     if(!myFile){
         cerr <<"error, cannot open file"<<endl;
     };
 
     //read number fron input file into array
-    const int mySize = 1000000;
+    
     int myArray[mySize];
     int count = 0; //size of the array
     int num;
@@ -73,7 +104,29 @@ int main(int argument, char* argv[]){
 
     //sorting the array using bubble
 
-    bubble(myArray,count);
+    //PTHREAD START
+    pthread_t myThread[8];
+    sortStuff myStuff[8];
+
+    //calculate section for each size
+    //1,000,000,000 / 8 = 125 000 000 for each
+    int myStuffSize = mySize / 8;
+
+    //creating thread to sort sections of the array
+    for (int i = 0; i < 8; i++){
+        myStuff[i].start = &myArray[i*myStuffSize];
+        myStuff[i].size = myStuffSize;
+
+        pthread_create(&myThread[i], NULL, bridge, (void *)&myStuff[i]);
+    };
+
+    //joining thread
+    for (int i = 0; i<8; i++){
+        pthread_join(myThread[i], NULL);
+    }
+
+
+    //bubble(myArray,count);
 
     ofstream myFile2(argv[2]);
     if(!myFile2){
