@@ -6,12 +6,14 @@ using namespace std;
 
 //create a structure to pass parameters to print_message in phread_create 
 
+//defines a structur named 'mmessage' to hold data for each thread
 struct message{
     string quote;
     int index;
     int fiboNum;
 };
 
+//recursive function to calculate Fibonacci numbers
 int fibo(int n){
     if(n == 0 || n == 1)
         return 1;
@@ -21,22 +23,30 @@ int fibo(int n){
 
 //this is the function that will be called in phthread_create
 //Notice this returns a void pointer
-
+//THREAD FUNCTION
 void *print_message(void *ptr){
     //cast the incoming unknown pointer to a message pointer
     message *arg = (message*) ptr;
     //print out the index and quote
 
     cout << "(" << arg->index<<"): "<<arg->quote <<endl;
+    //arg is a pointer to a message structure. accessing the index member structure that arg point to
     cout << "(" << arg->index<<"): "<<"Fibo: "<<arg->fiboNum<<" = "<<fibo(arg->fiboNum)<<endl;
+
+    // -> : access the member of a structur or class that is pointed to by a pointer
+    // shorthand notation for accessing members through pointers, making the code cleaner and more readeable
 
     return NULL;
 }
+//
 
 //initialize 4 strings in an arrya called quotes
 string quotes[4] = {"there","is","no","spoon"};
 
 int main(){
+    // creating 4 instances of the "message" struct.
+    // initializing them with data, and then creating 4 threads to execute the print_message function concurrently with each message instance
+
     message m0;
     m0.quote = quotes[0];
     m0.index = 0;
@@ -59,7 +69,7 @@ int main(){
 
     pthread_t thread0, thread1, thread2, thread3;
 
-    int iret0, iret1, iret2, iret3;
+    int iret0, iret1, iret2, iret3; 
 
     /*
     Create independent threads each of which will execute function
