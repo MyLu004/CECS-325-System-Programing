@@ -30,6 +30,8 @@ void swapFunction(int &x, int &y){
     y = temp;
 };
 
+
+
 void bubble(int *myArr, int arrSize){
     for(int i = 0; i < arrSize; i++){
         int swaps = 0;
@@ -47,6 +49,9 @@ void bubble(int *myArr, int arrSize){
     };
 
 };
+
+
+
 
 int main(int argument, char* argv[]){
 
