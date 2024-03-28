@@ -1,10 +1,9 @@
  // Author: My Lu
-// CECS 325-02 Prog 3
-// Due 03/12/2024
+// CECS 325-02 Prog 4
+// Due 03/28/2024
 
 //I certify that this program is my own original work. I did not copy any part of this program from any other source. 
 //I further certify that I typed each and every line of code in this program
-
 
 /*main function mysort need to do:
 1. Read the contents of the input file (numbers.dat).
@@ -16,16 +15,15 @@
 #include <iostream>
 // #include <vector>
 // #include <cmath>
-#include <fstream>
+
 // #include <string>
 // #include <ctime>
 // #include <cstdlib>
-
+#include <iostream>
+#include <fstream>
 #include <chrono>
 #include <pthread.h>
- 
 using namespace std;
-
 
 //public variable
 const int mySize = 1000000;
@@ -65,7 +63,6 @@ struct sortStuff{
 
 /*
 void* : cast to a pointer to 'sortStuff'
-
 */
 void *bridge(void *ptr) {
     sortStuff *arg = (sortStuff *)ptr;
@@ -76,7 +73,7 @@ void *bridge(void *ptr) {
     return NULL;
 }
 
-void merge(int array1[], int section1, int array2[], int section2){
+void merge(int* array1, int section1, int* array2, int section2){
     //allocate memory for the temp array
     int* temp = new int[section1+section2];
 
@@ -120,7 +117,6 @@ void merge(int array1[], int section1, int array2[], int section2){
 
     //after had all the value in the temp array,temp is sorted [definitely], copy all numbers from temp back to array1
 
-
     for (int myidx = 0; myidx < section1+section2; myidx++){
         array1[myidx] = temp[myidx];
     };
@@ -129,9 +125,6 @@ void merge(int array1[], int section1, int array2[], int section2){
     delete[] temp;
     
 }
-
-
-
 
 int main(int argument, char* argv[]){
 
@@ -145,10 +138,11 @@ int main(int argument, char* argv[]){
     if(!myFile){
         cerr <<"error, cannot open file"<<endl;
     };
-
     //read number fron input file into array
-    
-    int myArray[mySize];
+    //int myArray[mySize];
+
+    int *myArray = new int[mySize];
+
     int count = 0; //size of the array
     int num;
     while (myFile >> num && count < mySize){
@@ -157,7 +151,6 @@ int main(int argument, char* argv[]){
     myFile.close();
 
     //sorting the array using bubble
-
     //PTHREAD START
     pthread_t myThread[8];
     sortStuff myStuff[8];
@@ -178,13 +171,19 @@ int main(int argument, char* argv[]){
     for (int i = 0; i<8; i++){
         pthread_join(myThread[i], NULL);
     }
-
-    //after all thread done, starting merge
-
+    //after all thread done, starting merge using merge function
     
+    merge(myArray,125000,myArray+125000,125000);
+    merge(myArray+250000,125000,myArray+375000,125000);
+    merge(myArray+500000,125000,myArray+625000,125000);
+    merge(myArray+750000,125000,myArray+875000,125000);
 
-    //bubble(myArray,count);
-
+    merge(myArray,250000,myArray+250000,250000);
+    merge(myArray+500000,250000,myArray+750000,250000);
+    
+    merge(myArray,500000,myArray+500000,500000);
+    
+    
     ofstream myFile2(argv[2]);
     if(!myFile2){
         cerr <<"Error: unable ot open output file"<<endl;
@@ -194,8 +193,6 @@ int main(int argument, char* argv[]){
     for (int i = 0; i < count ; i++){
         myFile2 << myArray[i]<<endl;
     }
-
     myFile2.close();
-
     return 0;
 };
