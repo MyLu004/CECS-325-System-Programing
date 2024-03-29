@@ -71,6 +71,7 @@ void *bridge(void *ptr) {
     // bubble is called with start pointer and size passed from the sortStuff
     bubble(arg->start, arg->size);
     return NULL;
+    
 }
 
 void merge(int* array1, int section1, int* array2, int section2){
@@ -153,6 +154,8 @@ int main(int argument, char* argv[]){
     //sorting the array using bubble
     //PTHREAD START
     pthread_t myThread[8];
+
+    //array with struct sortStuff
     sortStuff myStuff[8];
 
     //calculate section for each size

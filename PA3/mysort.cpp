@@ -60,7 +60,7 @@ int main(int argument, char* argv[]){
     //It will accept up to 1 million numbers from the input file, but will run successfully with less
     //It accepts 2 command line arguments which is the input file and the output file name
 
-    //open inoout file
+    //open in/out file
     ifstream myFile(argv[1]);
     if(!myFile){
         cerr <<"error, cannot open file"<<endl;
