@@ -25,14 +25,14 @@ class Card{ // will creates Cards
         };
         
     //display function : display the card
-    void display(){
-        if(myRank == 'T'){
-            cout<<"10"<< mySuit<<" ";
-        }
-        else{
-            cout<<myRank<<mySuit<<" ";
-        }
-    };
+        void display(){
+            if(myRank == 'T'){
+                cout<<"10"<< mySuit<<" ";
+            }
+            else{
+                cout<<myRank<<mySuit<<" ";
+            }
+        };
 
     //return 1 for win, 0 for tie, -1 for lose
     int ComparingmyCard(Card other){

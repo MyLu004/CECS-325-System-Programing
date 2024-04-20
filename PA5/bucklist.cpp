@@ -5,8 +5,8 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
-#include <chrono>
-#include <cstdlib>
+// #include <chrono>
+// #include <cstdlib>
 #include <fstream>
 #include <ctime>
 #include <vector>
@@ -18,110 +18,104 @@ int globalSwapCount = 0;
 
 class Bucket{
     private:
-        vector<int> v;
+        vector<int> myVector;
     public:
-        Bucket();
-        void generate(int size, int min, int max);
-        void sort(); // Use the bubble sort from Prog3 and Prog4
-        int size();
-        int atIndex(int);
-        int merge(Bucket b); // merge b into this
-};
 
+        //default constructor
+        Bucket(){}
 
-void generate (int size, int min, int max){
-    ofstream myFile;
-    myFile.open("bubble.dat");
-    for(int i = 0; i < size; i++){
-            int myRandom = rand() % (max-min+1)+min;
+        //-----------DONE
+        void generate(int size, int min, int max){
+            cout<<"generation function"<<endl;
+            ofstream myFile;
+            myFile.open("bubble.dat");
+            for(int i = 0; i < size; i++){
+                int myRandom = rand() % (max-min+1)+min;
 
-            //myFile : an output file stream object ot which you want to write data
-            //write myRandom [data] into myFile
-            myFile << myRandom << endl;
-        }
-}
+                //myFile : an output file stream object ot which you want to write data
+                //write myRandom [data] into myFile
+                myFile << myRandom << endl;
+                cout << "generate: for in"<<endl;
 
-void swapFunction(int &x, int &y){
-    int temp;
-    temp = x;
-    x = y;
-    y = temp;
-};
-
-//TO-DO: Fix the parameter for this function 
-void sort(int *myArr, int arrSize){
-    for(int i = 0; i < arrSize; i++){
-        int swaps = 0;
-
-        for (int j = 0; j < arrSize-1; j++){
-            if(myArr[j] > myArr[j+1]){
-                //swap the item if the next item is biggier
-                swapFunction(myArr[j],myArr[j+1]);
-                swaps = 1;
-            };
+            }
         };
-        // cout <<"my swap: "<<swaps<<endl;
-        if(!swaps) //if there nothing to swap, break
-        break;
-    }; 
-};
 
-//TO-DO:fix the parameter for this function
-void merge(int* array1, int section1, int* array2, int section2){
-    //allocate memory for the temp array
-    int* temp = new int[section1+section2];
+        //-----------DONE
+        void sort(){
+            cout<<"sort function"<<endl;
+            for(int i = 0; i < myVector.size(); i++){
+                    int swaps = 0;
 
-    //loop and compare, and sort
-    //merge sort structure
+                    for (int j = 0; j < myVector.size()-1; j++){
+                        if(myVector[j] > myVector[j+1]){
+                            //swap the item if the next item is biggier
+                            // swapFunction(myArr[j],myArr[j+1]);
+                            int temp;
+                            temp = myVector[j];
+                            myVector[j] = myVector[j+1];
+                            myVector[j+1] = temp;
+                            globalSwapCount++;
+                            swaps = 1;
+                        };
+                    };
+                    // cout <<"my swap: "<<swaps<<endl;
+                    if(!swaps) //if there nothing to swap, break
+                    break;
+                };
+        };
+            // cout <<"my swap: "<<swaps<<endl
+     // Use the bubble sort from Prog3 and Prog4
 
-    //initialize the indices for array and merge array
-    int i = 0;
-    int j = 0;
-    int k = 0;
 
-    while (i < section1 && j < section2){
+        //-------------- DONE
+        int size(){
+            cout<<"size function"<<endl;
+            return myVector.size();
+        };
 
-        //if element array1 is larger than array 2
-        if(array1[i] < array2[j]){
-            temp[k] = array1[i];
-            k++; //incremenet to the next idx of temp
-            i++; // increment to the next idx of array1
+        //-----------------
+        int atIndex(int location){
+            cout<<"atIndex function"<<endl;
+            return myVector.at(location);
         }
-        else{
-            temp[k] = array2[j];
-            k++;
-            j++; // increment to the next idx of array2
-        }
-    }
+        //---------------
+        // void merge(int* array1, int section1, int* array2, int section2){
+        
+        int merge(Bucket b) {
+            cout<<"merge function"<<endl; 
+            vector<int> temp;
+            int i = 0, j = 0;
 
-    //copy remaining elements from the first section [like in case we going through on the seciton 2, and sorted section2, so mean 
-    // section1 , the left over element (already sorted) is the largest]
+            while (i < myVector.size() && j < b.size()) {
+                if (myVector[i] < b.atIndex(j)) {
+                    temp.push_back(myVector[i]);
+                    i++;
+                } else {
+                    temp.push_back(b.atIndex(j));
+                    j++;
+                }
+            }
 
-    while(i < section1){
-        temp[k] = array1[i];
-        k++;
-        i++;
-    };
+            // Copy any remaining elements from myVector
+            while (i < myVector.size()) {
+                temp.push_back(myVector[i]);
+                i++;
+            }
 
-    while(j < section1){
-        temp[k] = array2[j];
-        k++;
-        j++;
-    };
+            // Copy any remaining elements from b
+            while (j < b.size()) {
+                temp.push_back(b.atIndex(j));
+                j++;
+            }
 
-    //after had all the value in the temp array,temp is sorted [definitely], copy all numbers from temp back to array1
+            // Update myVector with merged elements
+            // myVector.clear();
+            myVector = temp;
 
-    for (int myidx = 0; myidx < section1+section2; myidx++){
-        array1[myidx] = temp[myidx];
-    };
-
-    //delete the temp memory [heap]
-    delete[] temp;
-    
+            return 0;
 }
 
-
-
+};
 
 int main(int argc, char *argv[])
 {
@@ -134,8 +128,10 @@ int main(int argc, char *argv[])
     cout << "Bucket Size:"<<bucketSize<<endl;
     cout << "Bucket Min Value:"<<bucketMin<<endl;
     cout << "Bucket Max value:"<<bucketMax<<endl;
+    
+    //list vector: cotain the pointer for bptr, where bptr is the vector contain the number
     vector<Bucket> list; // create empty Bucket vector
-    Bucket *bptr;
+    Bucket *bptr; //create pointer for type Bucket Vector 
 
 
     for(int i=0; i<bucketCount; i++) // creating bucketCount Buckets
@@ -161,9 +157,13 @@ int main(int argc, char *argv[])
         list.erase(list.begin()); // erase the first bucket in the list
     }
     // write all the numbers in endGame bucket to a file
+    cout<<"it went here"<<endl;
+    cout<<"my SIZE: "<< endGame.size()<<endl;
     fstream out("bucketList.out", ios::out);
     for(int i=0; i<endGame.size(); i++) // Bucket::size()
     {
+        // myFile2 << myArray[i]<<endl;
+        cout<<endGame.atIndex(i)<<endl;
         out << endGame.atIndex(i) << endl; // Bucket::atIndex(int)
         cout << "Global Swap Count:"<<globalSwapCount<<endl;
         cout << "\nbucketList.out has "<<bucketCount * bucketSize<< " sorted numbers\n";
