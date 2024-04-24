@@ -150,6 +150,7 @@ int main(int argc, char *argv[])
 
         list.push_back(*bptr); // pushing Bucket onto list
     }
+
     for (auto it = list.begin(); it != list.end(); it++)
     {
         it->sort(); // Bucket::sort
