@@ -27,44 +27,36 @@ public:
     void generate(int size, int min, int max)
     {
         cout << "generation function" << endl;
-        ofstream myFile;
-        myFile.open("bubble.dat");
+        // ofstream myFile;
+        // myFile.open("bubble.dat");
         for (int i = 0; i < size; i++)
         {
             int myRandom = rand() % (max - min + 1) + min;
+            myVector.push_back(myRandom);
 
             // myFile : an output file stream object ot which you want to write data
             // write myRandom [data] into myFile
-            myFile << myRandom << endl;
-            cout << "generate: for in" << endl;
+            // myFile << myRandom << endl;
+            // cout << "generate: for in" << endl;
         }
     };
 
     //-----------DONE
     void sort()
     {
-        cout << "sort function" << endl;
+        // cout << "sort function" << endl;
         for (int i = 0; i < myVector.size(); i++)
         {
-            int swaps = 0;
-
-            for (int j = 0; j < myVector.size() - 1; j++)
+            for (int j = 0; j < myVector.size() - i - 1; j++)
             {
                 if (myVector[j] > myVector[j + 1])
                 {
                     // swap the item if the next item is biggier
                     //  swapFunction(myArr[j],myArr[j+1]);
-                    int temp;
-                    temp = myVector[j];
-                    myVector[j] = myVector[j + 1];
-                    myVector[j + 1] = temp;
+                    swap(myVector[j], myVector[j + 1]);
                     globalSwapCount++;
-                    swaps = 1;
                 };
             };
-            // cout <<"my swap: "<<swaps<<endl;
-            if (!swaps) // if there nothing to swap, break
-                break;
         };
     };
     // cout <<"my swap: "<<swaps<<endl
@@ -73,14 +65,14 @@ public:
     //-------------- DONE
     int size()
     {
-        cout << "size function" << endl;
+        // cout << "size function" << endl;
         return myVector.size();
     };
 
     //-----------------
     int atIndex(int location)
     {
-        cout << "atIndex function" << endl;
+        // cout << "atIndex function" << endl;
         return myVector.at(location);
     }
     //---------------
@@ -88,48 +80,48 @@ public:
 
     int merge(Bucket b)
     {
-        cout << "merge function" << endl;
-        vector<int> temp;
-        int i = 0, j = 0;
+        // cout << "merge function" << endl;
+        int list1 = myVector.size();
+        int list2 = b.size();
+        int temp_list[list1 + list2];
 
-        while (i < myVector.size() && j < b.size())
+        int *ptr1 = &myVector[0];
+        int *ptr2 = &b.myVector[0];
+
+        int index = 0;
+
+        while (index < myVector.size() + b.size())
         {
-            if (myVector[i] < b.atIndex(j))
+            if (list1 < myVector.size() + b.size())
             {
-                temp.push_back(myVector[i]);
-                i++;
-            }
-            else
-            {
-                temp.push_back(b.atIndex(j));
-                j++;
+                if (list1 > 0 && (list2 == 0 || *ptr1 < *ptr2))
+                {
+                    // compare elements using *ptr1 and *ptr2
+                    temp_list[index] = *ptr1;
+                    ptr1++;
+                    list1--;
+                }
+                else
+                {
+                    temp_list[index] = *ptr2;
+                    ptr2++;
+                    list2--;
+                };
+                index++;
             }
         }
 
-        // Copy any remaining elements from myVector
-        while (i < myVector.size())
+        myVector.clear();
+        for (int i = 0; i < index; i++)
         {
-            temp.push_back(myVector[i]);
-            i++;
+            myVector.push_back(temp_list[i]);
         }
 
-        // Copy any remaining elements from b
-        while (j < b.size())
-        {
-            temp.push_back(b.atIndex(j));
-            j++;
-        }
+        return 0;
 
         // Update myVector with merged elements
         // myVector.clear();
         // myVector = temp;
-
-        for (int i = 0; i < temp.size(); i++)
-        {
-            myVector[i] = temp[i];
-        }
-
-        return 0;
     }
 };
 
@@ -172,16 +164,16 @@ int main(int argc, char *argv[])
         list.erase(list.begin()); // erase the first bucket in the list
     }
     // write all the numbers in endGame bucket to a file
-    cout << "it went here" << endl;
-    cout << "my SIZE: " << endGame.size() << endl;
+    // cout << "it went here" << endl;
+    // cout << "my SIZE: " << endGame.size() << endl;
     fstream out("bucketList.out", ios::out);
     for (int i = 0; i < endGame.size(); i++) // Bucket::size()
     {
         // myFile2 << myArray[i]<<endl;
-        cout << endGame.atIndex(i) << endl;
+        // cout << endGame.atIndex(i) << endl;
         out << endGame.atIndex(i) << endl; // Bucket::atIndex(int)
-        cout << "Global Swap Count:" << globalSwapCount << endl;
-        cout << "\nbucketList.out has " << bucketCount * bucketSize << " sorted numbers\n";
     }
+    cout << "Global Swap Count:" << globalSwapCount << endl;
+    cout << "\nbucketList.out has " << bucketCount * bucketSize << " sorted numbers\n";
     return 0;
 }
