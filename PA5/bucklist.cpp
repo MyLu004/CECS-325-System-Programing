@@ -26,7 +26,7 @@ public:
     //-----------DONE
     void generate(int size, int min, int max)
     {
-        cout << "generation function" << endl;
+        // cout << "generation function" << endl;
         // ofstream myFile;
         // myFile.open("bubble.dat");
         for (int i = 0; i < size; i++)
