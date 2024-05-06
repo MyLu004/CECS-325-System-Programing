@@ -107,7 +107,7 @@ class BigInt{
         BigInt operator- (int myNumber){
             BigInt myVal = myNumber; // Convert the integer to a BigInt object
             return *this - myVal; // Call the existing operator- for BigInt
-        }
+        };
             
         
         // this function seems to print the BigInt backwards...?
