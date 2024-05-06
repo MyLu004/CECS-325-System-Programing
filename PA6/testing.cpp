@@ -44,32 +44,32 @@ class BigInt{
         };
 
         BigInt operator+ (BigInt n){
-        
-            BigInt sumResult(0);
             
+            // Ensure that both vectors have the same size
+            int maxSize = max(v.size(), n.v.size());
+            v.resize(maxSize, 0); // Resize to the maximum size
+            n.v.resize(maxSize, 0); // Resize to the maximum size
+            
+            vector<char> result;
+            int carry = 0;
 
+            for (int i = maxSize - 1; i >= 0; --i) {
+                int sum = v[i] + n.v[i] + carry;
+                result.insert(result.begin(), sum % 10); // Insert the digit at the beginning
+                carry = sum / 10;
+            }
+
+            if (carry != 0) {
+                result.insert(result.begin(), carry); // Insert the carry if it exists
+            }
+
+    // Construct a BigInt object using the result vector
+            BigInt sumResult;
+            sumResult.v = result;
+    
             return sumResult;
         };
 
-        // Create a BigInt from the result vector
-        // BigInt operator- (BigInt){
-
-        // };
-
-        // BigInt operator- (int){
-
-        // };
-
-        // BigInt operator* (BigInt);
-        // BigInt operator/ (BigInt);
-        // BigInt operator% (BigInt);
-        // BigInt operator++(int);
-        // BigInt operator++( );
-        // BigInt operator[](int); // index function
-        // void print();
-        // int size();
-        // BigInt fibo(); // calls fiboHelper
-        // BigInt fact();
         
         // this function seems to print the BigInt backwards...?
 		friend ostream & operator<<(ostream & out, BigInt b)
@@ -83,7 +83,7 @@ class BigInt{
 
         
 
-        friend BigInt operator+ (int, BigInt);
+        // friend BigInt operator+ (int, BigInt);
 };
 
 int main(){
@@ -99,8 +99,8 @@ int main(){
     BigInt n3(n2);
     // BigInt fibo(12345);
     // BigInt fact(50);
-    BigInt imax = INT_MAX;
-    BigInt big("9223372036854775807");
+    // BigInt imax = INT_MAX;
+    // BigInt big("9223372036854775807");
     // display variables
     cout << "n1(int) :"<<setw(space)<<n1<<endl;
     cout << "s1(str) :"<<setw(space)<<s1<<endl;
@@ -115,10 +115,10 @@ int main(){
     // cout << n2 << "/"<< n1<< " = "<< n2/n1 <<" rem "<<n2%n1<<endl;
     // cout << "fibo("<<fibo<<") = "<<fibo.fibo() << endl;
     // cout << "fact("<<fact<<") = "<<fact.fact() << endl;
-    //cout << "10 + n1 = " << 10+n1 << endl;
-    cout <<"!!!my sum :"<< n1+10 <<endl;
-    // cout << "n1 + 10 = " << n1+10 << endl;
-    // //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false")<<endl;
+    cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
+    //cout <<"!!!my sum :"<< n1+10 <<endl;
+    cout << "n1 + 10 = " << n1 + 10 << endl; 
+    // //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false ")<<endl;
     // cout << "n1++ = ? --> before:"<<n1++<<" after:"<<n1<<endl;
     // cout << "++s1 = ? --> before:"<<++s1<<" after:"<<s1<<endl;
     // cout << "s2 * big = ? --> "<< s2 * big<<endl;
