@@ -64,7 +64,7 @@ class BigInt{
             }
 
     // Construct a BigInt object using the result vector
-            BigInt sumResult;
+            BigInt sumResult; 
             sumResult.v = result;
     
             return sumResult;
@@ -115,7 +115,7 @@ int main(){
     // cout << n2 << "/"<< n1<< " = "<< n2/n1 <<" rem "<<n2%n1<<endl;
     // cout << "fibo("<<fibo<<") = "<<fibo.fibo() << endl;
     // cout << "fact("<<fact<<") = "<<fact.fact() << endl;
-    cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
+    //cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
     //cout <<"!!!my sum :"<< n1+10 <<endl;
     cout << "n1 + 10 = " << n1 + 10 << endl; 
     // //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false ")<<endl;
