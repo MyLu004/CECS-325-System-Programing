@@ -1,13 +1,10 @@
 
 #include <iostream>
-// #include <algorithm>
-// #include <random>
-#include <chrono>
-#include <cstdlib>
-#include <fstream>
-#include <ctime>
+#include <algorithm>
 #include <vector>
 #include <iomanip>
+#include <string>
+
 using namespace std;
 
 
@@ -17,12 +14,45 @@ class BigInt{
         vector<char> v;
         BigInt fiboHelper(BigInt n, BigInt a = 0, BigInt b = 1);
     public:
-        BigInt();
-        BigInt(int);
-        BigInt(string);
-        BigInt operator+ (BigInt);
-        BigInt operator- (BigInt);
-        BigInt operator- (int);
+        BigInt(){
+            
+        };
+
+        BigInt(int myNumber){
+            cout << "Entering BigInt()\n";
+			if (myNumber == 0)
+				v.push_back(0);
+			else //pushing other value rather than 0
+                while (myNumber > 0)
+                {
+                    char digit = myNumber%10;
+                    cout << int(digit) << endl;
+        
+                    v.push_back(digit);
+                    myNumber /= 10;
+                }
+        };
+
+        BigInt(string myStr){
+            for (int i = myStr.size() - 1; i >= 0; --i) {
+                if (isdigit(myStr[i])) {
+                    v.push_back(myStr[i] - '0');
+                }
+            }
+        };
+
+        BigInt operator+ (BigInt){
+            
+        };
+
+        BigInt operator- (BigInt){
+
+        };
+
+        BigInt operator- (int){
+
+        };
+
         BigInt operator* (BigInt);
         BigInt operator/ (BigInt);
         BigInt operator% (BigInt);
@@ -69,9 +99,15 @@ void testUnit()
     cout << "fact("<<fact<<") = "<<fact.fact() << endl;
     cout << "10 + n1 = " << 10+n1 << endl;
     cout << "n1 + 10 = " << n1+10 << endl;
-    cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false")<<endl;
+    //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false")<<endl;
     cout << "n1++ = ? --> before:"<<n1++<<" after:"<<n1<<endl;
     cout << "++s1 = ? --> before:"<<++s1<<" after:"<<s1<<endl;
     cout << "s2 * big = ? --> "<< s2 * big<<endl;
     cout << "big * s2 = ? --> "<< big * s2<<endl;
 }
+
+int main(){
+    // testUnit();
+    cout<<"hi"<<endl;
+    return 0;
+};
