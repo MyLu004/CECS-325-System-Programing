@@ -8,8 +8,6 @@
 
 using namespace std;
 
-
-
 class BigInt{
     private:
         vector<char> v;
@@ -45,20 +43,23 @@ class BigInt{
 
         BigInt operator+ (BigInt n){
             
-            // Ensure that both vectors have the same size
+            // get the bigger size
             int maxSize = max(v.size(), n.v.size());
-            v.resize(maxSize, 0); // Resize to the maximum size
-            n.v.resize(maxSize, 0); // Resize to the maximum size
+            //fill vector with the same size and same light
+            v.resize(maxSize, 0); 
+            n.v.resize(maxSize, 0); 
             
+            //vector to store the result
             vector<char> result;
             int carry = 0;
 
             for (int i = maxSize - 1; i >= 0; --i) {
                 int sum = v[i] + n.v[i] + carry;
-                result.insert(result.begin(), sum % 10); // Insert the digit at the beginning
-                carry = sum / 10;
+                  result.insert(result.begin(), sum % 10); // Insert the digit at the beginning
+                carry = sum / 10; //if it large than 10, then carry = 1
             }
 
+            //if we have the carry at the end, then insert
             if (carry != 0) {
                 result.insert(result.begin(), carry); // Insert the carry if it exists
             }
@@ -70,6 +71,44 @@ class BigInt{
             return sumResult;
         };
 
+        BigInt operator- (BigInt number){
+            int maxSize = max(v.size(), number.v.size());
+
+            v.resize(maxSize, 0);
+            number.v.resize(maxSize, 0);
+
+            //vector to store the result
+            vector<char> result(maxSize,0);
+            int borrow = 0; //init the borrow
+
+            for (int i = maxSize - 1; i >= 0; --i) {
+                int diff = v[i] - number.v[i] - borrow;
+        
+                if (diff < 0) {
+                    diff += 10;
+                    borrow = 1;
+                } else {
+                    borrow = 0;
+                }
+
+                //result.insert(result.begin(), diff + '0');
+                result[i] = diff + '0'; // Store the digit in result vector
+            };
+            // Remove leading zeroes from the result
+            while (result.size() > 1 && result[0] == '0') {
+                result.erase(result.begin());
+            };
+
+            //BigInt sumResult(0);
+            //sumResult.v = result;
+            return BigInt(string(result.rbegin(), result.rend()));
+        };
+
+        BigInt operator- (int myNumber){
+            BigInt myVal = myNumber; // Convert the integer to a BigInt object
+            return *this - myVal; // Call the existing operator- for BigInt
+        }
+            
         
         // this function seems to print the BigInt backwards...?
 		friend ostream & operator<<(ostream & out, BigInt b)
@@ -79,11 +118,12 @@ class BigInt{
 			while (it != b.v.begin()-1)
 				out << int(*it--);
 			return out;
-        	}
+        };
 
-        
-
-        // friend BigInt operator+ (int, BigInt);
+        friend BigInt operator+ (int val1, BigInt val2){
+            BigInt myResult = val2 + val1;
+            return myResult;
+        };
 };
 
 int main(){
@@ -94,7 +134,7 @@ int main(){
     // initialize variables
     BigInt n1(25);
     BigInt s1("25");
-    BigInt n2(1234);
+    BigInt n2(10);
     BigInt s2("1234");
     BigInt n3(n2);
     // BigInt fibo(12345);
@@ -117,7 +157,9 @@ int main(){
     // cout << "fact("<<fact<<") = "<<fact.fact() << endl;
     //cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
     //cout <<"!!!my sum :"<< n1+10 <<endl;
-    cout << "n1 + 10 = " << n1 + 10 << endl; 
+    //cout << "n1 + 10 = " << n1 + 10 << endl; 
+    cout << "n1 - 2 = " << n1 - 16 <<endl;
+    cout << "35 - n1 = " << n1 - n2 <<endl;
     // //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false ")<<endl;
     // cout << "n1++ = ? --> before:"<<n1++<<" after:"<<n1<<endl;
     // cout << "++s1 = ? --> before:"<<++s1<<" after:"<<s1<<endl;

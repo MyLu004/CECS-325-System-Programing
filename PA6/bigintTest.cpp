@@ -19,14 +19,14 @@ class BigInt{
         };
 
         BigInt(int myNumber){
-            cout << "Entering BigInt()\n";
+            // cout << "Entering BigInt()\n";
 			if (myNumber == 0)
 				v.push_back(0);
 			else //pushing other value rather than 0
                 while (myNumber > 0)
                 {
                     char digit = myNumber%10;
-                    cout << int(digit) << endl;
+                    // cout << int(digit) << endl;
         
                     v.push_back(digit);
                     myNumber /= 10;
@@ -36,35 +36,121 @@ class BigInt{
         BigInt(string myStr){
             for (int i = myStr.size() - 1; i >= 0; --i) {
                 if (isdigit(myStr[i])) {
+                    //cout<<"digit push back:"<< myStr[i] - '0'<<endl;
                     v.push_back(myStr[i] - '0');
                 }
             }
         };
 
-        BigInt operator+ (BigInt){
+        BigInt operator+ (BigInt n){
             
+            // get the bigger size
+            int maxSize = max(v.size(), n.v.size());
+            //fill vector with the same size and same light
+            v.resize(maxSize, 0); 
+            n.v.resize(maxSize, 0); 
+            
+            //vector to store the result
+            vector<char> result;
+            int carry = 0;
+
+            for (int i = maxSize - 1; i >= 0; --i) {
+                int sum = v[i] + n.v[i] + carry;
+                  result.insert(result.begin(), sum % 10); // Insert the digit at the beginning
+                carry = sum / 10; //if it large than 10, then carry = 1
+            }
+
+            //if we have the carry at the end, then insert
+            if (carry != 0) {
+                result.insert(result.begin(), carry); // Insert the carry if it exists
+            }
+
+    // Construct a BigInt object using the result vector
+            BigInt sumResult; 
+            sumResult.v = result;
+    
+            return sumResult;
         };
 
-        BigInt operator- (BigInt){
 
+        //SUBSTRACTION
+        BigInt operator- (BigInt number){
+            int maxSize = max(v.size(), number.v.size());
+
+            v.resize(maxSize, 0);
+            number.v.resize(maxSize, 0);
+
+            //vector to store the result
+            vector<char> result(maxSize,0);
+            int borrow = 0; //init the borrow
+
+            for (int i = maxSize - 1; i >= 0; --i) {
+                int diff = v[i] - number.v[i] - borrow;
+        
+                if (diff < 0) {
+                    diff += 10;
+                    borrow = 1;
+                } else {
+                    borrow = 0;
+                }
+
+                //result.insert(result.begin(), diff + '0');
+                result[i] = diff + '0'; // Store the digit in result vector
+            };
+            // Remove leading zeroes from the result
+            while (result.size() > 1 && result[0] == '0') {
+                result.erase(result.begin());
+            };
+
+            //BigInt sumResult(0);
+            //sumResult.v = result;
+            return BigInt(string(result.rbegin(), result.rend()));
         };
 
-        BigInt operator- (int){
-
+        BigInt operator- (int myNumber){
+            BigInt myVal = myNumber; // Convert the integer to a BigInt object
+            return *this - myVal; // Call the existing operator- for BigInt
         };
 
+        //MULTPLICATION
         BigInt operator* (BigInt);
+
+        //DIVISION
         BigInt operator/ (BigInt);
         BigInt operator% (BigInt);
+
+        //INCREMENT
         BigInt operator++(int);
         BigInt operator++( );
+
+
         BigInt operator[](int); // index function
-        void print();
-        int size();
+        
+        void print(){
+
+        };
+
+        int size(){
+
+        };
+        
         BigInt fibo(); // calls fiboHelper
         BigInt fact();
-        friend ostream& operator<<(ostream&, const BigInt&);
-        friend BigInt operator+ (int, BigInt);
+
+        //cout function
+		friend ostream & operator<<(ostream & out, BigInt b)
+		{	
+		    cout << "Entering operator<<()\n";
+			vector<char>::iterator it = b.v.end()-1;
+			while (it != b.v.begin()-1)
+				out << int(*it--);
+			return out;
+        };
+
+        friend BigInt operator+ (int val1, BigInt val2){
+            BigInt myResult = val2 + val1;
+            return myResult;
+        };
 };
 
 void testUnit()
