@@ -120,19 +120,33 @@ class BigInt{
         BigInt operator% (BigInt);
 
         //INCREMENT
-        BigInt operator++(int);
-        BigInt operator++( );
+        //post-increment
+        BigInt operator++(int){
+            BigInt myVal = *this;
+            *this = *this + 1;
+            return myVal;
+        };
+        
+        //pre-increment
+        BigInt operator++(){
+            *this = *this + 1;     // Increment the current value
+            return *this; 
+        } ;
 
 
         BigInt operator[](int); // index function
         
+        //iterate through the vector
         void print(){
-
+            for(auto it = v.begin(); it != v.end(); ++it){
+                cout << int(*it); // print the value
+            }
         };
 
+        //return vector size
         int size(){
-
-        };
+            return v.size();
+        }; 
         
         BigInt fibo(); // calls fiboHelper
         BigInt fact();

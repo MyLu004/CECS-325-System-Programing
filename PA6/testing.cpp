@@ -64,7 +64,7 @@ class BigInt{
                 result.insert(result.begin(), carry); // Insert the carry if it exists
             }
 
-    // Construct a BigInt object using the result vector
+            // Construct a BigInt object using the result vector
             BigInt sumResult; 
             sumResult.v = result;
     
@@ -108,7 +108,45 @@ class BigInt{
             BigInt myVal = myNumber; // Convert the integer to a BigInt object
             return *this - myVal; // Call the existing operator- for BigInt
         };
-            
+
+        //INCREMENT
+        //post-increment
+        BigInt operator++(int){
+            BigInt myVal = *this;
+            *this = *this + 1;
+            return myVal;
+        };
+
+        //MULTPLICATION
+        // BigInt operator* (BigInt myNumber){
+        //     int maxSize = v.size()+myNumber.size();
+        //     v.resize(maxSize, 0);
+        //     n.v.resize(maxSize, 0);
+
+        //     vector<char> myResult;
+
+        //     for (int i = maxSize - 1; i >= 0; --i){
+
+        //     }
+        // };
+        
+        //pre-increment
+        BigInt operator++(){
+            *this = *this + 1;     // Increment the current value
+            return *this; 
+        } ; 
+
+        //iterate through the vector
+        void print(){
+            for(auto it = v.begin(); it != v.end(); ++it){
+                cout << int(*it); // print the value
+            }
+        };
+
+        //return vector size
+        int size(){
+            return v.size();
+        }; 
         
         // this function seems to print the BigInt backwards...?
 		friend ostream & operator<<(ostream & out, BigInt b)
@@ -132,9 +170,9 @@ int main(){
     // system("whoami");
     // system("date");
     // initialize variables
-    BigInt n1(25);
+    BigInt n1(10);
     BigInt s1("25");
-    BigInt n2(10);
+    BigInt n2(2);
     BigInt s2("1234");
     BigInt n3(n2);
     // BigInt fibo(12345);
@@ -147,6 +185,7 @@ int main(){
     cout << "n2(int) :"<<setw(space)<<n2<<endl;
     cout << "s2(str) :"<<setw(space)<<s2<<endl;
     cout << "n3(n2) :"<<setw(space)<<n3<<endl;
+
     // cout << "fibo(12345):"<<setw(space)<<fibo<<endl;
     // cout << "fact(50) :"<<setw(space)<<fact<<endl;
     // cout << "imax :"<<setw(space)<<imax<<endl;
@@ -158,13 +197,17 @@ int main(){
     //cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
     //cout <<"!!!my sum :"<< n1+10 <<endl;
     //cout << "n1 + 10 = " << n1 + 10 << endl; 
-    cout << "n1 - 2 = " << n1 - 16 <<endl;
-    cout << "35 - n1 = " << n1 - n2 <<endl;
+    //cout << "n1 - 2 = " << n1 - 16 <<endl;
+    //cout << "35 - n1 = " << n1 - n2 <<endl;
     // //cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false ")<<endl;
-    // cout << "n1++ = ? --> before:"<<n1++<<" after:"<<n1<<endl;
-    // cout << "++s1 = ? --> before:"<<++s1<<" after:"<<s1<<endl;
+    
+    //post-increment
+    //cout << "n1++ = ? --> before:"<<n1++<<" after:"<<n1<<endl;
+    //cout << "++s1 = ? --> before:"<<++s1<<" after:"<<s1<<endl;
     // cout << "s2 * big = ? --> "<< s2 * big<<endl;
     // cout << "big * s2 = ? --> "<< big * s2<<endl;
+
+    //cout << n1*2<<endl;
 
     return 0;
 };
