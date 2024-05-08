@@ -51,14 +51,6 @@ public:
 
     BigInt(string myStr)
     {
-        // for (int i = myStr.size() - 1; i >= 0; --i)
-        // {
-        //     if (isdigit(myStr[i]))
-        //     {
-        //         // cout<<"digit push back:"<< myStr[i] - '0'<<endl;
-        //         v.push_back(myStr[i] - '0');
-        //     }
-        // }
 
         for(int i = 0; i <= myStr.size(); i++){
             if (isdigit(myStr[i]))
@@ -67,21 +59,12 @@ public:
                 v.push_back(myStr[i] - '0');
             }
         }
-        // vector<char>::iterator iter = v.begin();
-        // while (iter != v.end())
-        // {
-        //     cout << *iter;
-        //     iter++;
-        // }
     };
 
     BigInt operator+(BigInt n)
     {
         // get the bigger size
         int maxSize = max(v.size(), n.v.size());
-        // fill vector with the same size and same light
-        // v.resize(maxSize, 0);
-        // n.v.resize(maxSize, 0);
         if(v.size()< maxSize){
             int different_size = maxSize - v.size();
             for (int i=0; i < (maxSize - v.size()); i++){
@@ -122,14 +105,7 @@ public:
 
     BigInt operator-(BigInt number)
     {
-
-        // v.resize(maxSize, 0);
-        // number.v.resize(maxSize, 0);
-        // get the bigger size
         int maxSize = max(v.size(), number.v.size());
-        // fill vector with the same size and same light
-        // v.resize(maxSize, 0);
-        // n.v.resize(maxSize, 0);
         if(v.size()< maxSize){
             int different_size = maxSize - v.size();
             for (int i=0; i < (maxSize - v.size()); i++){
@@ -267,13 +243,6 @@ public:
         return v.size();
     };
 
-    // BigInt operator[](BigInt myValue)
-    // {
-    //     re
-    // }
-
-    // this function seems to print the BigInt backwards...?
-    // cout function
     friend ostream &operator<<(ostream &out, const BigInt &b) {
     if (b.v.size() > 13) {
         for (auto it = b.v.begin(); it != b.v.begin() + 7; ++it) {
