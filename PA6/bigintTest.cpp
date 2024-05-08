@@ -140,8 +140,32 @@ public:
     };
 
     // MULTPLICATION
-    BigInt operator*(BigInt){
+    BigInt operator*(BigInt myNumber)
+    {
+        int base_case = 0;
+        BigInt myResult, myOther;
+        BigInt InitBaseCase(1);
 
+        // checking the vector size
+        if (v.size() < myNumber.size())
+        {
+            myOther = myOther + *this;
+            myResult = myResult + myNumber;
+        }
+        else
+        {
+            base_case = 1;
+            myOther = myOther + myNumber;
+            myResult = myResult + *this;
+        };
+
+        while (!(myOther == InitBaseCase))
+        {
+            myResult = myResult + *this;
+            myOther = myOther - 1;
+        };
+
+        return myResult;
     };
 
     // DIVISION

@@ -16,11 +16,11 @@ private:
     {
         if (n == 0)
         {
-            return (a);
+            return a;
         }
         else if (n == 1)
         {
-            return (b);
+            return b;
         }
         else
         {
@@ -45,34 +45,56 @@ public:
                 v.push_back(digit);
                 myNumber /= 10;
             }
+        reverse(v.begin(), v.end());
+
     };
 
     BigInt(string myStr)
     {
-        for (int i = myStr.size() - 1; i >= 0; --i)
-        {
+        // for (int i = myStr.size() - 1; i >= 0; --i)
+        // {
+        //     if (isdigit(myStr[i]))
+        //     {
+        //         // cout<<"digit push back:"<< myStr[i] - '0'<<endl;
+        //         v.push_back(myStr[i] - '0');
+        //     }
+        // }
+
+        for(int i = 0; i <= myStr.size(); i++){
             if (isdigit(myStr[i]))
             {
                 // cout<<"digit push back:"<< myStr[i] - '0'<<endl;
                 v.push_back(myStr[i] - '0');
             }
         }
-        vector<char>::iterator iter = v.begin();
-        while (iter != v.end())
-        {
-            cout << *iter;
-            iter++;
-        }
+        // vector<char>::iterator iter = v.begin();
+        // while (iter != v.end())
+        // {
+        //     cout << *iter;
+        //     iter++;
+        // }
     };
 
     BigInt operator+(BigInt n)
     {
-
         // get the bigger size
         int maxSize = max(v.size(), n.v.size());
         // fill vector with the same size and same light
-        v.resize(maxSize, 0);
-        n.v.resize(maxSize, 0);
+        // v.resize(maxSize, 0);
+        // n.v.resize(maxSize, 0);
+        if(v.size()< maxSize){
+            int different_size = maxSize - v.size();
+            for (int i=0; i < (maxSize - v.size()); i++){
+                v.insert(v.begin(),0);
+            };
+        }
+
+        if(n.v.size()< maxSize){
+            int different_size = maxSize - n.v.size();
+            for (int i=0; i < (different_size); i++){
+                n.v.insert(n.v.begin(),0);
+            };
+        }
 
         // vector to store the result
         vector<char> result;
@@ -100,10 +122,27 @@ public:
 
     BigInt operator-(BigInt number)
     {
-        int maxSize = max(v.size(), number.v.size());
 
-        v.resize(maxSize, 0);
-        number.v.resize(maxSize, 0);
+        // v.resize(maxSize, 0);
+        // number.v.resize(maxSize, 0);
+        // get the bigger size
+        int maxSize = max(v.size(), number.v.size());
+        // fill vector with the same size and same light
+        // v.resize(maxSize, 0);
+        // n.v.resize(maxSize, 0);
+        if(v.size()< maxSize){
+            int different_size = maxSize - v.size();
+            for (int i=0; i < (maxSize - v.size()); i++){
+                v.insert(v.begin(),0);
+            };
+        }
+
+        if(number.v.size()< maxSize){
+            int different_size = maxSize - number.v.size();
+            for (int i=0; i < (different_size); i++){
+                number.v.insert(number.v.begin(),0);
+            };
+        }
 
         // vector to store the result
         vector<char> result(maxSize, 0);
@@ -134,7 +173,7 @@ public:
 
         // BigInt sumResult(0);
         // sumResult.v = result;
-        return BigInt(string(result.rbegin(), result.rend()));
+        return BigInt(string(result.begin(), result.end()));
     };
 
     BigInt operator-(int myNumber)
@@ -190,11 +229,10 @@ public:
 
     BigInt fibo()
     {
-
         return fiboHelper(*this);
     }; // calls fiboHelper
 
-    bool operator==(BigInt n)
+    bool operator==(const BigInt &n) const
     {
 
         if (v.size() != n.v.size())
@@ -236,14 +274,17 @@ public:
 
     // this function seems to print the BigInt backwards...?
     // cout function
-    friend ostream &operator<<(ostream &out, BigInt b)
-    {
-        cout << "Entering operator<<()\n";
-        vector<char>::iterator it = b.v.end() - 1;
-        while (it != b.v.begin() - 1)
-            out << int(*it--);
-        return out;
-    };
+    friend ostream &operator<<(ostream &out, const BigInt &b) {
+    // cout << "Entering operator<<()\n";
+    for (auto it = b.v.begin(); it != b.v.end(); ++it) {
+        // if (it == b.v.begin()+7){
+        //     out<<"e"<<b.v.size()-1<<endl;
+        //     break;
+        // }
+        out << int(*it);
+    }
+    return out;
+    }
 
     friend BigInt operator+(int val1, BigInt val2)
     {
@@ -260,12 +301,12 @@ int main()
     // system("whoami");
     // system("date");
     // initialize variables
-    // BigInt n1(25);
-    BigInt s1("2468357");
-    // BigInt n2(1234);
+    // BigInt n1(45);
+    // BigInt s1("2468357");
+    // BigInt n2(17);
     // BigInt s2("1234");
     // BigInt n3(n2);
-    // BigInt fibo(12345);
+    BigInt fibo(12);
     // BigInt fact(50);
     // BigInt imax = INT_MAX;
     // BigInt big("9223372036854775807");
@@ -276,13 +317,13 @@ int main()
     // cout << "s2(str) :" << setw(space) << s2 << endl;
     // cout << "n3(n2) :" << setw(space) << n3 << endl;
 
-    // cout << "fibo(12345):" << setw(space) << fibo.fibo() << endl;
+    cout << "fibo(12345):" << setw(space) << fibo << endl;
     //  cout << "fact(50) :"<<setw(space)<<fact<<endl;
     //  cout << "imax :"<<setw(space)<<imax<<endl;
     //  cout << "big :"<<setw(space)<<big<<endl;
     //  cout << "big.print(): "; big.print(); cout << endl;
     //  cout << n2 << "/"<< n1<< " = "<< n2/n1 <<" rem "<<n2%n1<<endl;
-    // cout << "fibo(" << fibo << ") = " << fibo.fibo() << endl;
+    cout << "fibo(" << fibo << ") = " << fibo.fibo() << endl;
     //  cout << "fact("<<fact<<") = "<<fact.fact() << endl;
     //  cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
     //  cout <<"!!!my sum :"<< n1+10 <<endl;
