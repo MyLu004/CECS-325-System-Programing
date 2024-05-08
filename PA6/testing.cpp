@@ -275,16 +275,18 @@ public:
     // this function seems to print the BigInt backwards...?
     // cout function
     friend ostream &operator<<(ostream &out, const BigInt &b) {
-    // cout << "Entering operator<<()\n";
-    for (auto it = b.v.begin(); it != b.v.end(); ++it) {
-        // if (it == b.v.begin()+7){
-        //     out<<"e"<<b.v.size()-1<<endl;
-        //     break;
-        // }
-        out << int(*it);
+    if (b.v.size() > 13) {
+        for (auto it = b.v.begin(); it != b.v.begin() + 7; ++it) {
+            out << int(*it);
+        }
+        out << "e" << b.v.size() - 1; // Print in exponential notation
+    } else {
+        for (auto it = b.v.begin(); it != b.v.end(); ++it) {
+            out << int(*it);
+        }
     }
-    return out;
-    }
+    return out;       
+};
 
     friend BigInt operator+(int val1, BigInt val2)
     {
@@ -301,21 +303,21 @@ int main()
     // system("whoami");
     // system("date");
     // initialize variables
-    // BigInt n1(45);
-    // BigInt s1("2468357");
-    // BigInt n2(17);
-    // BigInt s2("1234");
-    // BigInt n3(n2);
-    BigInt fibo(12);
+    BigInt n1(45);
+    BigInt s1("2468357");
+    BigInt n2(1234);
+    BigInt s2("1234");
+    BigInt n3(n2);
+    BigInt fibo(25);
     // BigInt fact(50);
     // BigInt imax = INT_MAX;
     // BigInt big("9223372036854775807");
     // display variables
-    // cout << "n1(int) :" << setw(space) << n1 << endl;
-    // cout << "s1(str) :" << setw(space) << s1 << endl;
-    // cout << "n2(int) :" << setw(space) << n2 << endl;
-    // cout << "s2(str) :" << setw(space) << s2 << endl;
-    // cout << "n3(n2) :" << setw(space) << n3 << endl;
+    cout << "n1(int) :" << setw(space) << n1 << endl;
+    cout << "s1(str) :" << setw(space) << s1 << endl;
+    cout << "n2(int) :" << setw(space) << n2 << endl;
+    cout << "s2(str) :" << setw(space) << s2 << endl;
+    cout << "n3(n2) :" << setw(space) << n3 << endl;
 
     cout << "fibo(12345):" << setw(space) << fibo << endl;
     //  cout << "fact(50) :"<<setw(space)<<fact<<endl;
