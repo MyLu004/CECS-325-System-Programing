@@ -46,13 +46,13 @@ public:
                 myNumber /= 10;
             }
         reverse(v.begin(), v.end());
-
     };
 
     BigInt(string myStr)
     {
 
-        for(int i = 0; i <= myStr.size(); i++){
+        for (int i = 0; i <= myStr.size(); i++)
+        {
             if (isdigit(myStr[i]))
             {
                 // cout<<"digit push back:"<< myStr[i] - '0'<<endl;
@@ -65,17 +65,21 @@ public:
     {
         // get the bigger size
         int maxSize = max(v.size(), n.v.size());
-        if(v.size()< maxSize){
+        if (v.size() < maxSize)
+        {
             int different_size = maxSize - v.size();
-            for (int i=0; i < (maxSize - v.size()); i++){
-                v.insert(v.begin(),0);
+            for (int i = 0; i < (maxSize - v.size()); i++)
+            {
+                v.insert(v.begin(), 0);
             };
         }
 
-        if(n.v.size()< maxSize){
+        if (n.v.size() < maxSize)
+        {
             int different_size = maxSize - n.v.size();
-            for (int i=0; i < (different_size); i++){
-                n.v.insert(n.v.begin(),0);
+            for (int i = 0; i < (different_size); i++)
+            {
+                n.v.insert(n.v.begin(), 0);
             };
         }
 
@@ -106,17 +110,21 @@ public:
     BigInt operator-(BigInt number)
     {
         int maxSize = max(v.size(), number.v.size());
-        if(v.size()< maxSize){
+        if (v.size() < maxSize)
+        {
             int different_size = maxSize - v.size();
-            for (int i=0; i < (maxSize - v.size()); i++){
-                v.insert(v.begin(),0);
+            for (int i = 0; i < (maxSize - v.size()); i++)
+            {
+                v.insert(v.begin(), 0);
             };
         }
 
-        if(number.v.size()< maxSize){
+        if (number.v.size() < maxSize)
+        {
             int different_size = maxSize - number.v.size();
-            for (int i=0; i < (different_size); i++){
-                number.v.insert(number.v.begin(),0);
+            for (int i = 0; i < (different_size); i++)
+            {
+                number.v.insert(number.v.begin(), 0);
             };
         }
 
@@ -243,19 +251,25 @@ public:
         return v.size();
     };
 
-    friend ostream &operator<<(ostream &out, const BigInt &b) {
-    if (b.v.size() > 13) {
-        for (auto it = b.v.begin(); it != b.v.begin() + 7; ++it) {
-            out << int(*it);
+    friend ostream &operator<<(ostream &out, const BigInt &b)
+    {
+        if (b.v.size() > 13)
+        {
+            for (auto it = b.v.begin(); it != b.v.begin() + 7; ++it)
+            {
+                out << int(*it);
+            }
+            out << "e" << b.v.size() - 1; // Print in exponential notation
         }
-        out << "e" << b.v.size() - 1; // Print in exponential notation
-    } else {
-        for (auto it = b.v.begin(); it != b.v.end(); ++it) {
-            out << int(*it);
+        else
+        {
+            for (auto it = b.v.begin(); it != b.v.end(); ++it)
+            {
+                out << int(*it);
+            }
         }
-    }
-    return out;       
-};
+        return out;
+    };
 
     friend BigInt operator+(int val1, BigInt val2)
     {
@@ -288,13 +302,13 @@ int main()
     cout << "s2(str) :" << setw(space) << s2 << endl;
     cout << "n3(n2) :" << setw(space) << n3 << endl;
 
-    cout << "fibo(12345):" << setw(space) << fibo << endl;
+    // cout << "fibo(12345):" << setw(space) << fibo << endl;
     //  cout << "fact(50) :"<<setw(space)<<fact<<endl;
     //  cout << "imax :"<<setw(space)<<imax<<endl;
     //  cout << "big :"<<setw(space)<<big<<endl;
     //  cout << "big.print(): "; big.print(); cout << endl;
     //  cout << n2 << "/"<< n1<< " = "<< n2/n1 <<" rem "<<n2%n1<<endl;
-    cout << "fibo(" << fibo << ") = " << fibo.fibo() << endl;
+    // cout << "fibo(" << fibo << ") = " << fibo.fibo() << endl;
     //  cout << "fact("<<fact<<") = "<<fact.fact() << endl;
     //  cout << "10 + n1 = " << 10 + n1 << endl; //neighbor operator
     //  cout <<"!!!my sum :"<< n1+10 <<endl;

@@ -1,9 +1,17 @@
+// Author: My Lu
+// CECS 325-02 Prog 6
+// Due 05/08/2024
+
+// I certify that this program is my own original work. I did not copy any part of this program from any other source.
+// I further certify that I typed each and every line of code in this program
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <iomanip>
 #include <string>
+#include <typeinfo>
+#include <climits>
 
 using namespace std;
 
@@ -15,22 +23,20 @@ private:
     {
         if (n == 0)
         {
-            return (a);
+            return a;
         }
         else if (n == 1)
         {
-            return (b);
+            return b;
         }
         else
         {
             return fiboHelper(n - 1, b, a + b);
-        }
+        };
     };
 
 public:
-    BigInt(){
-
-    };
+    BigInt(){};
 
     BigInt(int myNumber)
     {
@@ -46,11 +52,13 @@ public:
                 v.push_back(digit);
                 myNumber /= 10;
             }
+        reverse(v.begin(), v.end());
     };
 
     BigInt(string myStr)
     {
-        for (int i = myStr.size() - 1; i >= 0; --i)
+
+        for (int i = 0; i <= myStr.size(); i++)
         {
             if (isdigit(myStr[i]))
             {
@@ -62,117 +70,94 @@ public:
 
     BigInt operator+(BigInt n)
     {
+        BigInt Mytotal;
+        int Myremainder = 0;
 
-        // get the bigger size
-        int maxSize = max(v.size(), n.v.size());
-        // fill vector with the same size and same light
-        v.resize(maxSize, 0);
-        n.v.resize(maxSize, 0);
+        int i = v.size() - 1;
+        int j = n.v.size() - 1;
 
-        // vector to store the result
-        vector<char> result;
-        int carry = 0;
-
-        for (int i = maxSize - 1; i >= 0; --i)
+        while (i >= 0 || j >= 0 || Myremainder)
         {
-            int sum = v[i] + n.v[i] + carry;
-            result.insert(result.begin(), sum % 10); // Insert the digit at the beginning
-            carry = sum / 10;                        // if it large than 10, then carry = 1
+            int sum = Myremainder;
+
+            if (i >= 0)
+            {
+                int digit1 = int(v[i]);
+                sum += digit1;
+                i--;
+            }
+            if (j >= 0)
+            {
+                int digit2 = int(n.v[j]);
+                sum += digit2;
+                j--;
+            }
+
+            Mytotal.v.insert(Mytotal.v.begin(), sum % 10);
+            Myremainder = sum / 10;
         }
 
-        // if we have the carry at the end, then insert
-        if (carry != 0)
-        {
-            result.insert(result.begin(), carry); // Insert the carry if it exists
-        }
-
-        // Construct a BigInt object using the result vector
-        BigInt sumResult;
-        sumResult.v = result;
-
-        return sumResult;
+        return Mytotal;
     };
 
-    // SUBSTRACTION
-    BigInt operator-(BigInt number)
+    BigInt operator-(BigInt n)
     {
-        int maxSize = max(v.size(), number.v.size());
+        BigInt Mytotal;
+        int Myborrow = 0;
 
-        v.resize(maxSize, 0);
-        number.v.resize(maxSize, 0);
+        int i = v.size() - 1;
+        int j = n.v.size() - 1;
 
-        // vector to store the result
-        vector<char> result(maxSize, 0);
-        int borrow = 0; // init the borrow
-
-        for (int i = maxSize - 1; i >= 0; --i)
+        while (i >= 0 || j >= 0 || Myborrow)
         {
-            int diff = v[i] - number.v[i] - borrow;
+            int Mysum = Myborrow;
+            Myborrow = 0;
 
-            if (diff < 0)
+            if (i >= 0)
             {
-                diff += 10;
-                borrow = 1;
+                int digit1 = int(v[i]);
+                Mysum += digit1;
+                i--;
             }
-            else
+            if (j >= 0)
             {
-                borrow = 0;
+                int digit2 = int(n.v[j]);
+                Mysum -= digit2;
+                j--;
             }
 
-            // result.insert(result.begin(), diff + '0');
-            result[i] = diff + '0'; // Store the digit in result vector
-        };
+            if (Mysum < 0)
+            {
+                Mysum = Mysum + 10;
+                Myborrow = -1;
+            }
+
+            Mytotal.v.insert(Mytotal.v.begin(), Mysum);
+        }
         // Remove leading zeroes from the result
-        while (result.size() > 1 && result[0] == '0')
+        while (Mytotal.size() > 1 && Mytotal.v[0] == 0)
         {
-            result.erase(result.begin());
+            Mytotal.v.erase(Mytotal.v.begin());
         };
 
         // BigInt sumResult(0);
         // sumResult.v = result;
-        return BigInt(string(result.rbegin(), result.rend()));
+        return Mytotal;
     };
+
+    // BigInt operator-(int myNumber)
+    // {
+    //     BigInt myVal = myNumber; // Convert the integer to a BigInt object
+    //     return *this - myVal;    // Call the existing operator- for BigInt
+    // };
 
     BigInt operator-(int myNumber)
     {
         BigInt myVal = myNumber; // Convert the integer to a BigInt object
-        return *this - myVal;
+        BigInt result(0);
+        result = *this - myVal;
+        return result; // Call the existing operator- for BigInt
     };
-
-    // MULTPLICATION
-    BigInt operator*(BigInt myNumber)
-    {
-        int base_case = 0;
-        BigInt myResult, myOther;
-        BigInt InitBaseCase(1);
-
-        // checking the vector size
-        if (v.size() < myNumber.size())
-        {
-            myOther = myOther + *this;
-            myResult = myResult + myNumber;
-        }
-        else
-        {
-            base_case = 1;
-            myOther = myOther + myNumber;
-            myResult = myResult + *this;
-        };
-
-        while (!(myOther == InitBaseCase))
-        {
-            myResult = myResult + *this;
-            myOther = myOther - 1;
-        };
-
-        return myResult;
-    };
-
-    // DIVISION
-    BigInt operator/(BigInt){
-
-    };
-    BigInt operator%(BigInt);
 
     // INCREMENT
     // post-increment
@@ -190,36 +175,170 @@ public:
         return *this;
     };
 
+    // MULTPLICATION
+    BigInt operator*(BigInt myNumber)
+    {
+        // int base_case = 0;
+        BigInt myCopy = *this;
+        BigInt myResult(0);
+
+        if (myCopy >= myNumber)
+        {
+            while (myNumber > BigInt(0))
+            {
+                myResult = myResult + myCopy;
+                myNumber = myNumber - 1;
+            }
+        }
+        else if (myNumber > myCopy)
+        {
+            while (myCopy > BigInt(0))
+            {
+                myResult = myResult + myNumber;
+                myCopy = myCopy - 1;
+            };
+        }
+        return myResult;
+    };
+
+    // DIVISION
+    BigInt operator/(BigInt myNumber)
+    {
+        BigInt myCount(0);
+        BigInt myCopy = *this;
+        // cout << "my copy: " << myCopy << endl;
+        while (myCopy >= myNumber)
+        {
+            // cout << "it went here" << endl;
+            myCopy = myCopy - myNumber;
+            // cout << "my copy: " << myCopy << endl;
+            myCount++;
+        }
+        return myCount;
+    }
+
+    // MODULE
+    BigInt operator%(BigInt myNumber)
+    {
+        // BigInt myCount = 0;
+        BigInt myCopy(*this);
+        // cout << "my copy: " << myCopy << endl;
+        while (myCopy >= myNumber)
+        {
+            // cout << "it went here" << endl;
+            myCopy = myCopy - myNumber;
+            // myCount++;
+        }
+        return myCopy;
+    }
+
+    BigInt fact()
+    {
+        BigInt compare(1);
+        BigInt myResult(1);
+        BigInt myCopy = *this;
+        int c = 0;
+        while (myCopy >= compare)
+        {
+            myResult = myResult * myCopy;
+            myCopy = myCopy - 1;
+            c++;
+        }
+
+        cout << c << endl;
+        return myResult;
+    }
+
+    BigInt fibo()
+    {
+        return fiboHelper(*this);
+    }; // calls fiboHelper
+
     bool operator==(BigInt n)
     {
+        return v == n.v;
+    };
 
-        if (v.size() != n.v.size())
+    bool operator>=(BigInt n)
+    {
+        // cout << "my v: " << v << endl;
+        // cout << "my n.v: " << n.v << endl;
+        // cout << "answer: " << (v >= n.v) << endl;
+
+        if (v.size() > n.v.size())
+        {
+            return true;
+        }
+
+        else if (n.size() > v.size())
         {
             return false;
         }
+
         else
         {
             for (int i = 0; i <= v.size(); i++)
             {
-                if (v[i] != n.v[i])
+                if (v[i] > n.v[i])
+                {
+                    return true;
+                }
+                else if (n.v[i] > v[i])
                 {
                     return false;
-                };
+                }
+                else
+                {
+                    continue;
+                }
             }
-            return true;
         }
+        return true;
     };
 
-    BigInt operator[](int); // index function
+    bool operator>(BigInt n)
+    {
+        // cout << "my v: " << v << endl;
+        // cout << "my n.v: " << n.v << endl;
+        // cout << "answer: " << (v >= n.v) << endl;
+
+        if (v.size() > n.size())
+        {
+            return true;
+        }
+        else if (n.size() > v.size())
+        {
+            return false;
+        }
+
+        else
+        {
+            for (int i = 0; i < v.size(); i++)
+            {
+                if (v[i] > n.v[i])
+                {
+                    return true;
+                }
+                else if (n.v[i] > v[i])
+                {
+                    return false;
+                }
+                else
+                {
+                    continue;
+                    ;
+                }
+            }
+        }
+        return false;
+    };
 
     // iterate through the vector
     void print()
     {
         for (auto it = v.begin(); it != v.end(); ++it)
-        {
-            cout << int(*it); // print the value
-        }
-    };
+            cout << (int)*it;
+    }
 
     // return vector size
     int size()
@@ -227,34 +346,41 @@ public:
         return v.size();
     };
 
-    BigInt fibo()
+    friend ostream &operator<<(ostream &out, const BigInt &b)
     {
-
-        return fiboHelper(*this);
-    }; // calls fiboHelper
-
-    BigInt fact(){
-
-    };
-
-    // cout function
-    friend ostream &operator<<(ostream &out, BigInt b)
-    {
-        cout << "Entering operator<<()\n";
-        vector<char>::iterator it = b.v.end() - 1;
-        while (it != b.v.begin() - 1)
-            out << int(*it--);
+        if (b.v.size() > 13)
+        {
+            for (auto it = b.v.begin(); it != b.v.begin() + 7; ++it)
+            {
+                if (it == b.v.begin())
+                {
+                    out << int(*it) << ".";
+                }
+                else
+                {
+                    out << int(*it);
+                }
+            }
+            out << "e" << b.v.size() - 1; // Print in exponential notation
+        }
+        else
+        {
+            for (auto it = b.v.begin(); it != b.v.end(); ++it)
+            {
+                out << int(*it);
+            }
+        }
         return out;
     };
 
     friend BigInt operator+(int val1, BigInt val2)
     {
-        BigInt myResult = val2 + val1;
+        BigInt myResult = val2 + BigInt(val1);
         return myResult;
     };
 };
 
-void testUnit()
+int main()
 {
     int space = 10;
     cout << "\a\nTestUnit:\n"
@@ -267,7 +393,7 @@ void testUnit()
     BigInt n2(1234);
     BigInt s2("1234");
     BigInt n3(n2);
-    BigInt fibo(12345);
+    BigInt fibo(12);
     BigInt fact(50);
     BigInt imax = INT_MAX;
     BigInt big("9223372036854775807");
@@ -287,18 +413,12 @@ void testUnit()
     cout << n2 << "/" << n1 << " = " << n2 / n1 << " rem " << n2 % n1 << endl;
     cout << "fibo(" << fibo << ") = " << fibo.fibo() << endl;
     cout << "fact(" << fact << ") = " << fact.fact() << endl;
-    cout << "10 + n1 = " << 10 + n1 << endl;
+    cout << "10 + n1 = " << 100 + n1 << endl;
     cout << "n1 + 10 = " << n1 + 10 << endl;
-    // cout << "(n1 == s1)? --> "<<((n1==s1)?"true":"false")<<endl;
+    cout << "(n1 == s1)? --> " << ((n1 == s1) ? "true" : "false") << endl;
     cout << "n1++ = ? --> before:" << n1++ << " after:" << n1 << endl;
     cout << "++s1 = ? --> before:" << ++s1 << " after:" << s1 << endl;
     cout << "s2 * big = ? --> " << s2 * big << endl;
     cout << "big * s2 = ? --> " << big * s2 << endl;
-}
-
-int main()
-{
-    // testUnit();
-    cout << "hi" << endl;
     return 0;
 };
